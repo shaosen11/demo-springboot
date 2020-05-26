@@ -1,6 +1,5 @@
 package com.edu.lingnan.demospringboot.dao;
 
-import com.edu.lingnan.demospringboot.entity.SysUser;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Repository;
@@ -66,5 +65,13 @@ public interface SysUserDao {
      * @return 影响行数
      */
     int deleteById(Integer id);
+
+    /**
+     * 登录
+     * @param username
+     * @param password
+     * @return
+     */
+    SysUser login(String username, String password);
 
 }
