@@ -13,6 +13,7 @@ import org.springframework.stereotype.Component;
 @ConfigurationProperties("neu.person")
 @Component
 public class person {
+    private Integer id;
     private String name;
     private int age;
 }
