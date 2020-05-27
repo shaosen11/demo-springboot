@@ -101,5 +101,11 @@
     <delete id="deleteById">
         delete from test.sys_user where id = #{id}
     </delete>
+    <select id="login" resultMap="SysUserMap">
+        select
+          id, username, password, create_time, org_id, enabled, phone, email
+        from test.sys_user
+        where username = #{username} and password = #{password}
+    </select>
 
 </mapper>

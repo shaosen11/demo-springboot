@@ -11,7 +11,7 @@ import java.util.List;
  * (SysUser)表数据库访问层
  *
  * @author makejava
- * @since 2020-05-25 17:17:10
+ * @since 2020-05-27 17:29:28
  */
 @Mapper
 @Repository
@@ -67,4 +67,5 @@ public interface SysUserDao {
      */
     int deleteById(Integer id);
 
+    SysUser login(@Param("username") String username, @Param("password") String password);
 }

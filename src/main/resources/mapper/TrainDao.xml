@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.edu.lingnan.demospringboot.dao.TrainDao">
+
+    <resultMap type="com.edu.lingnan.demospringboot.entity.Train" id="TrainMap">
+        <result property="id" column="id" jdbcType="INTEGER"/>
+        <result property="serialNumber" column="serial_number" jdbcType="INTEGER"/>
+        <result property="studentId" column="student_id" jdbcType="INTEGER"/>
+        <result property="name" column="name" jdbcType="VARCHAR"/>
+        <result property="className" column="class_name" jdbcType="VARCHAR"/>
+        <result property="remark" column="remark" jdbcType="VARCHAR"/>
+    </resultMap>
+
+    <!--查询单个-->
+    <select id="queryById" resultMap="TrainMap">
+        select
+          id, serial_number, student_id, name, class_name, remark
+        from demo_springboot.train
+        where id = #{id}
+    </select>
+
+    <!--查询指定行数据-->
+    <select id="queryAllByLimit" resultMap="TrainMap">
+        select
+          id, serial_number, student_id, name, class_name, remark
+        from demo_springboot.train
+        limit #{offset}, #{limit}
+    </select>
+
+    <!--通过实体作为筛选条件查询-->
+    <select id="queryAll" resultMap="TrainMap">
+        select
+          id, serial_number, student_id, name, class_name, remark
+        from demo_springboot.train
+        <where>
+            <if test="id != null">
+                and id = #{id}
+            </if>
+            <if test="serialNumber != null">
+                and serial_number = #{serialNumber}
+            </if>
+            <if test="studentId != null">
+                and student_id = #{studentId}
+            </if>
+            <if test="name != null and name != ''">
+                and name = #{name}
+            </if>
+            <if test="className != null and className != ''">
+                and class_name = #{className}
+            </if>
+            <if test="remark != null and remark != ''">
+                and remark = #{remark}
+            </if>
+        </where>
+    </select>
+
+    <!--新增所有列-->
+    <insert id="insert" keyProperty="id" useGeneratedKeys="true">
+        insert into demo_springboot.train(serial_number, student_id, name, class_name, remark)
+        values (#{serialNumber}, #{studentId}, #{name}, #{className}, #{remark})
+    </insert>
+
+    <!--通过主键修改数据-->
+    <update id="update">
+        update demo_springboot.train
+        <set>
+            <if test="serialNumber != null">
+                serial_number = #{serialNumber},
+            </if>
+            <if test="studentId != null">
+                student_id = #{studentId},
+            </if>
+            <if test="name != null and name != ''">
+                name = #{name},
+            </if>
+            <if test="className != null and className != ''">
+                class_name = #{className},
+            </if>
+            <if test="remark != null and remark != ''">
+                remark = #{remark},
+            </if>
+        </set>
+        where id = #{id}
+    </update>
+
+    <!--通过主键删除-->
+    <delete id="deleteById">
+        delete from demo_springboot.train where id = #{id}
+    </delete>
+
+</mapper>

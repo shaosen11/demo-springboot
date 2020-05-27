@@ -1,18 +1,23 @@
 package com.edu.lingnan.demospringboot.controller;
 
 import com.edu.lingnan.demospringboot.entity.SysUser;
+import com.edu.lingnan.demospringboot.service.SysMenuService;
 import com.edu.lingnan.demospringboot.service.SysUserService;
+import com.edu.lingnan.demospringboot.service.impl.SysMenuServiceImpl;
+import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
+import javax.servlet.http.HttpSession;
+import java.util.Map;
 
 /**
  * (SysUser)表控制层
  *
  * @author makejava
- * @since 2020-05-25 17:17:12
+ * @since 2020-05-27 17:29:30
  */
-@RestController
+@Controller
 @RequestMapping("sysUser")
 public class SysUserController {
     /**
@@ -21,6 +26,8 @@ public class SysUserController {
     @Resource
     private SysUserService sysUserService;
 
+    @Resource
+    private SysMenuServiceImpl sysMenuService;
     /**
      * 通过主键查询单条数据
      *
@@ -32,4 +39,19 @@ public class SysUserController {
         return this.sysUserService.queryById(id);
     }
 
+    @PostMapping("login")
+    public String login(String username, String password, HttpSession session){
+        SysUser sysUser = sysUserService.login(username, password);
+        if (sysUser == null){
+            return "login";
+        }
+        session.setAttribute("sysUser", sysUser);
+        return "index";
+    }
+
+    @GetMapping("/menu")
+    @ResponseBody
+    public Map<String, Object> menu() {
+        return sysMenuService.menu();
+    }
 }

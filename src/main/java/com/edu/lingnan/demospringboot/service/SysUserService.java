@@ -7,7 +7,7 @@ import java.util.List;
  * (SysUser)表服务接口
  *
  * @author makejava
- * @since 2020-05-25 17:17:10
+ * @since 2020-05-27 17:29:29
  */
 public interface SysUserService {
 
@@ -52,4 +52,5 @@ public interface SysUserService {
      */
     boolean deleteById(Integer id);
 
+    SysUser login(String username, String password);
 }
