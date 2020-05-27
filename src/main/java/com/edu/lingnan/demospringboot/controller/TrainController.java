@@ -1,11 +1,12 @@
 package com.edu.lingnan.demospringboot.controller;
 
 import com.edu.lingnan.demospringboot.entity.Train;
-import com.edu.lingnan.demospringboot.service.IImportExcelService;
 import com.edu.lingnan.demospringboot.service.TrainService;
 import com.edu.lingnan.demospringboot.service.impl.IImportExcelServiceImpl;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.annotation.Resource;
@@ -45,10 +46,10 @@ public class TrainController {
     @PostMapping("/files")
     public String withSimple(MultipartFile file, HttpServletRequest req, HttpServletResponse resp) {
         List<Train> list = iImportExcelService.importExcelWithSimple(file, req, resp);
-        if(list == null || list.size() == 0 ) {
+        if (list == null || list.size() == 0) {
             return "fail";
         }
-        for(Train bean:list) {
+        for (Train bean : list) {
             System.out.println(bean.toString());
             //批量插入list到数据库
             trainService.insert(bean);
@@ -57,7 +58,7 @@ public class TrainController {
     }
 
     @RequestMapping("/fileinput")
-    public String fileView(){
+    public String fileView() {
         return "fileinput";
     }
 }
