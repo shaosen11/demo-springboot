@@ -1,0 +1,102 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.edu.lingnan.demospringboot.dao.StudentDao">
+
+    <resultMap type="com.edu.lingnan.demospringboot.entity.Student" id="StudentMap">
+        <result property="id" column="id" jdbcType="INTEGER"/>
+        <result property="sid" column="sid" jdbcType="VARCHAR"/>
+        <result property="name" column="name" jdbcType="VARCHAR"/>
+        <result property="className" column="class_name" jdbcType="VARCHAR"/>
+        <result property="classId" column="class_id" jdbcType="INTEGER"/>
+        <result property="remark" column="remark" jdbcType="VARCHAR"/>
+        <result property="enable" column="enable" jdbcType="INTEGER"/>
+    </resultMap>
+
+    <!--查询单个-->
+    <select id="queryById" resultMap="StudentMap">
+        select
+          id, sid, name, class_name, class_id, remark, enable
+        from test.student
+        where id = #{id}
+    </select>
+
+    <!--查询指定行数据-->
+    <select id="queryAllByLimit" resultMap="StudentMap">
+        select
+          id, sid, name, class_name, class_id, remark, enable
+        from test.student
+        limit #{offset}, #{limit}
+    </select>
+
+    <!--通过实体作为筛选条件查询-->
+    <select id="queryAll" resultMap="StudentMap">
+        select
+        id, sid, name, class_name, class_id, remark, enable
+        from test.student
+        <where>
+            <if test="student.id != null">
+                and id = #{student.id}
+            </if>
+            <if test="student.sid != null and student.sid != ''">
+                and sid like concat('%', #{student.sid}, '%')
+            </if>
+            <if test="student.name != null and student.name != ''">
+                and name like concat('%', #{student.name}, '%')
+            </if>
+            <if test="student.className != null and student.className != ''">
+                and class_name like concat('%', #{student.className}, '%')
+            </if>
+            <if test="student.classId != null">
+                and class_id = #{student.classId}
+            </if>
+            <if test="student.remark != null and student.remark != ''">
+                and remark like concat('%', #{student.remark}, '%')
+            </if>
+            <if test="student.enable != null">
+                and student.enable = #{student.enable}
+            </if>
+        </where>
+    </select>
+
+    <!--新增所有列-->
+    <insert id="insert" keyProperty="id" useGeneratedKeys="true">
+        insert into test.student(sid, name, class_name, class_id, remark)
+        values
+        <foreach collection="list" separator="," item="item">
+            (#{item.sid}, #{item.name}, #{item.className}, #{item.classId}, #{item.remark})
+        </foreach>
+
+    </insert>
+
+    <!--通过主键修改数据-->
+    <update id="update">
+        update test.student
+        <set>
+            <if test="sid != null and sid != ''">
+                sid = #{sid},
+            </if>
+            <if test="name != null and name != ''">
+                name = #{name},
+            </if>
+            <if test="className != null and className != ''">
+                class_name = #{className},
+            </if>
+            <if test="classId != null">
+                class_id = #{classId},
+            </if>
+            <if test="remark != null and remark != ''">
+                remark = #{remark},
+            </if>
+            <if test="enable != null">
+                enable = #{enable},
+            </if>
+        </set>
+        where id = #{id}
+    </update>
+
+    <!--通过主键删除-->
+    <delete id="deleteById">
+        delete from test.student where id = #{id}
+    </delete>
+
+</mapper>
